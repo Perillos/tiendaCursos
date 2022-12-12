@@ -9,6 +9,9 @@ cargarEventListeners();
 function cargarEventListeners() {
     //Cuando agregas un curso presionando "Agregar al carrito"
     listaCursos.addEventListener('click', agregarCurso);
+
+    // Elimina cursos del carrito
+    carrito.addEventListener('click', eliminarCurso)
 }
 
 
@@ -22,6 +25,18 @@ function agregarCurso(e) {
         leerDatosCurso(cursoSelecionado);
     }
 
+}
+
+// Elimina un curso del carrito
+function eliminarCurso(eve) {
+  if (eve.target.classList.contains('borrar-curso')) {
+    const cursoId = eve.target.getAttribute('data-id');
+
+    // Elimina del array de articulosCarrito por el data-id
+    articulosCarrito = articulosCarrito.filter(curso => curso.id !== cursoId);
+
+    carritoHTML();
+  }
 }
 
 /* Lee el contenido del HTML al que le dimos click y extrae la inforamación del curso */
@@ -55,17 +70,16 @@ function leerDatosCurso(curso) {
       // Agrega elementos al carrito
       articulosCarrito = [...articulosCarrito, infoCurso];
     }
-    
-
-    console.log(articulosCarrito);
-
     carritoHTML();
 }
 
 
 // Muestra el Carrito de compras en el HTML
 function carritoHTML() {
+
+  // limpiar HTML
   limpiarHTML()
+
   // Recorre el carrito y genera el HTML
   articulosCarrito.forEach( curso => {
     const { imagen, titulo, precio, cantidad, id } = curso;
